@@ -6,11 +6,13 @@ import {
     Card
 } from 'react-bootstrap';
 
-const Job = () => {   
-    return (
+const Job = (props) => {   
+    const { title, company } = props.job
+    return (        
         <Row>
             <Card>
-                test
+                <h4>{title}</h4>
+                <div>{company}</div>
             </Card>
         </Row>
     )

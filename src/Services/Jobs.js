@@ -1,18 +1,18 @@
 import axios from 'axios';
 
-export async function getList() {
-    return await axios.get('https://jobs.github.com/positions.json', {
-        params: {
-            search: 'react'
-        }
-    })
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        })
-        .then(function () {
-            // always executed
-        })
+const apiUrl = 'https://jobs.github.com/positions.json';
+
+export async function getList(params) {
+    try {
+        const response = await axios.get(apiUrl, {
+            params: {
+                search: params.searchQuery
+            }
+        })       
+        console.log(response);
+        return response.data;
+    } 
+    catch (error) {
+      console.error(error);
+    }
 }

@@ -12,14 +12,14 @@ import {
 } from 'react-bootstrap';
 
 const Header = () => {
-    const {addList} = useContext(StoreContext);
+    //const {getList} = useContext(StoreContext);
     const [value, setValue] = useState("")
   
     //const {addList} = props.store
 
     const prepareAddList = (e) => {
         e.preventDefault()
-        addList(value)
+       // getList(value)
         setValue("")
     }
 

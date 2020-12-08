@@ -1,40 +1,41 @@
-import React, { useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react';
 import './App.css';
-import { getList } from './Services/Jobs';
+import Spinner from 'react-bootstrap/Spinner';
 import Top from './Containers/Top/Top';
 import Main from './Containers/Main/Main';
 import Left from './Containers/Left/Left';
-import { ListStore } from './Store/Store';
+import ListStore, { StoreProvider, withStore } from './Store/Store';
 
-export const StoreContext = React.createContext();
+const store = new ListStore();
 
 function App() {
   const mounted = useRef(true);
-  const store = new ListStore()
-  useEffect(() => {
-    mounted.current = true;
-    getList()
-      .then(items => {
-        if (mounted.current) {
-          store.addList(items)
-        }
-      })
+  const [loading, setLoader] = useState(true);
+
+  useEffect(async () => {
+    setLoader(true);
+    if (mounted.current) {
+      await store.getList();
+      setLoader(false);
+    }
     return () => {
-      mounted.current = false;
+      mounted.current = false
     }
   }, [])
 
-
   return (
-    <StoreContext.Provider value={store}>
-      <div className="App">
-        <Top />
-        <Left />
-        <Main />
-      </div>
-    </StoreContext.Provider>
+    loading ? (
+      <Spinner animation="border" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>) : (
+        <StoreProvider store={store}>
+          <Top />
+          <Left />
+          <Main />
+        </StoreProvider>
+      )
   );
 }
 
-export default App;
+export default withStore(observer(App));
