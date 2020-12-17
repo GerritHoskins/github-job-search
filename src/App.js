@@ -16,7 +16,7 @@ function App() {
   useEffect(async () => {
     setLoader(true);
     if (mounted.current) {
-      await store.getList();
+      await store.getList("react");
       setLoader(false);
     }
     return () => {

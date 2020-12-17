@@ -4,16 +4,16 @@ import { getList as jobService } from './../Services/Jobs';
 class ListStore {
   @observable lists = [];
   @observable filter = "";
-  @observable searchQuery = "react";
+  @observable searchQuery = "";
   @observable status = "";
 
-  @action getList = async (value) => {
+  @action getList = async (search) => {
     try {
       var params = {
-        searchQuery: this.searchQuery
+        searchQuery: search
       };
-      const urlParams = new URLSearchParams(Object.entries(params));
-      const data = await jobService(urlParams);
+      //const urlParams = new URLSearchParams(Object.entries(params));
+      const data = await jobService(params);
       runInAction(() => {
         this.lists = data;
       });
