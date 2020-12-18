@@ -1,13 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { withStore } from './../../Store/Store';
+import { withStore, useStore } from './../../Store/Store';
 import Job from '../../Components/Card/Job';
 import {
   Container
 } from 'react-bootstrap';
 
-const Main = (props) => {
-  const { lists } = props.store;
+const Main = () => {
+ // const { lists } = props.store;
+  const [query, setQuery] = useState("");
+  const store = useStore();
+  const { lists, getList, deleteList } = store;
 
   useEffect(() => { }, []);
   return (
@@ -19,4 +22,4 @@ const Main = (props) => {
   );
 }
 
-export default withStore(observer(Main));
+export default observer(Main);

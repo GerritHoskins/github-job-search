@@ -7,9 +7,9 @@ import {
 } from 'react-bootstrap';
 
 const Job = (props) => {   
-    const { title, company } = props.job
+    const { title, company, id } = props.job
     return (        
-        <Row>
+        <Row key={id}>
             <Card>
                 <h4>{title}</h4>
                 <div>{company}</div>

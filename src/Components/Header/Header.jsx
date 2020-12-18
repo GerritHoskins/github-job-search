@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { StoreContext } from '../../App';
+import ListStore, { withStore } from './../../Store/Store';
 import { observer } from 'mobx-react';
 import {
     Container,
@@ -11,15 +11,15 @@ import {
     Button
 } from 'react-bootstrap';
 
-const Header = () => {
-    //const {getList} = useContext(StoreContext);
+const Header = (props) => {
     const [value, setValue] = useState("")
-  
-    //const {addList} = props.store
+    const [loading, setLoader] = useState(true);
 
     const prepareAddList = (e) => {
         e.preventDefault()
-       // getList(value)
+        props.store.deleteList();
+        props.store.getList(value);
+        setLoader(false);
         setValue("")
     }
 
@@ -32,13 +32,13 @@ const Header = () => {
                             <h1 align="left">GitHub Jobs</h1>
                         </Col>
                     </Row>
-                    <Form onSubmit={prepareAddList} >
+                    <Form>
                         <Form.Row className="justify-content-md-center">
                             <Col>
                                 <FormControl type="text" placeholder="Title, companies, expertise or benefits" value={value} type="text" onChange={(e) => setValue(e.target.value)} />
                             </Col>
                             <Col md="auto">
-                                <Button>Submit</Button>
+                                <Button onClick={prepareAddList}>Submit</Button>
                             </Col>
                         </Form.Row>
                     </Form>
@@ -47,4 +47,4 @@ const Header = () => {
         </>
     )
 };
-export default observer(Header);
+export default withStore(Header);

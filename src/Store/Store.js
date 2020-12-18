@@ -1,8 +1,8 @@
 import React from 'react';
-import { observable, action, computed, runInAction } from "mobx";
+import { observable, action, computed, runInAction, autorun } from "mobx";
 import { getList as jobService } from './../Services/Jobs';
 class ListStore {
-  @observable lists = [];
+  @observable lists;
   @observable filter = "";
   @observable searchQuery = "";
   @observable status = "";
@@ -14,7 +14,7 @@ class ListStore {
       };
       //const urlParams = new URLSearchParams(Object.entries(params));
       const data = await jobService(params);
-      runInAction(() => {
+      autorun(() => {
         this.lists = data;
       });
     } catch (error) {
