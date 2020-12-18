@@ -1,21 +1,41 @@
 import React from 'react';
-import { observable, action, computed, runInAction, autorun } from "mobx";
+import { observable, action, computed, runInAction, makeAutoObservable, autorun } from "mobx";
 import { getList as jobService } from './../Services/Jobs';
-class ListStore {
-  @observable lists;
+class Store {
+  @observable lists = [];
   @observable filter = "";
   @observable searchQuery = "";
-  @observable status = "";
+  @observable status;
+
+  constructor() {
+    makeAutoObservable(this)
+  }
+
+  @action
+  setList(list) {
+      this.lists = list;
+  }
+
+  @action
+  setStatus(stat) {
+      this.status = stat;
+  }
 
   @action getList = async (search) => {
     try {
       var params = {
         searchQuery: search
       };
-      //const urlParams = new URLSearchParams(Object.entries(params));
-      const data = await jobService(params);
-      autorun(() => {
-        this.lists = data;
+      this.setStatus(!this.satus);
+      const res = await jobService(params);           
+      runInAction(() => { 
+        if(res.length > 0 && res){
+          this.setStatus(false);
+        }else {
+          this.setStatus(true);
+        }
+        this.setList(res);  
+           
       });
     } catch (error) {
       runInAction(() => {
@@ -52,4 +72,5 @@ export const withStore = (Component) => (props) => {
 };
 
 //export default ListStore = new ListStore();
-export default ListStore;
+const stores = new Store();
+export default stores;

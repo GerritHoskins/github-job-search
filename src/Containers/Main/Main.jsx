@@ -1,25 +1,42 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { observer } from 'mobx-react';
-import { withStore, useStore } from './../../Store/Store';
+import React, {
+  useState,
+  useEffect
+} from 'react';
+import Spinner from 'react-bootstrap/Spinner';
+import {
+  observer
+} from 'mobx-react';
+import stores, {
+  useStore
+} from './../../Store/Store';
 import Job from '../../Components/Card/Job';
 import {
   Container
 } from 'react-bootstrap';
 
 const Main = () => {
- // const { lists } = props.store;
-  const [query, setQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const store = useStore();
-  const { lists, getList, deleteList } = store;
 
-  useEffect(() => { }, []);
+  useEffect(async () => {            
+      await stores.getList();
+      if(!stores.status) {
+        setIsLoading(false);
+      }
+      return;
+  }, []);
+
   return (
     <Container>
-      {lists.map(item => (
-        <Job job={item} />
+      {isLoading ? 
+        <Spinner animation="grow" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner> :
+      store.lists.map(item => ( 
+        <Job key={item.id} job={item} />
       ))}
     </Container>
-  );
+  )
 }
 
 export default observer(Main);

@@ -6,11 +6,15 @@ export async function getList(params) {
     try {
         const response = await axios.get(apiUrl, {
             params: {
-                description: params.searchQuery
+                description: params.searchQuery || "react"
             }
         })       
         console.log(response);
-        return response.data;
+        if(response.statusText === "OK") {
+            return response.data;
+        }else {
+            return [];
+        }        
     } 
     catch (error) {
       console.error(error);

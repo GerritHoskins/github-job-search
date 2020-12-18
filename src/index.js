@@ -3,17 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
-import { debugContextDevtool } from 'react-context-devtool';
+import {
+  debugContextDevtool
+} from 'react-context-devtool';
+import stores, {
+  StoreProvider
+} from './Store/Store';
 
-/* 
-ReactDOM.render(
-    <App />,
-  document.getElementById('root')
-);
- */
 const container = document.getElementById("root");
 
-ReactDOM.render(<App />, container);
+ReactDOM.render( <
+  StoreProvider store={stores}>
+  <App />
+  </StoreProvider>, container
+);
 
 // Attach root container
 debugContextDevtool(container);

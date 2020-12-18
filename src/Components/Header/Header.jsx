@@ -1,50 +1,48 @@
-import React, { useContext, useState } from 'react';
-import ListStore, { withStore } from './../../Store/Store';
-import { observer } from 'mobx-react';
+import React, { useState } from 'react';
+import stores, { useStore } from './../../Store/Store';
 import {
     Container,
     Row,
-    Col,
-    Navbar,
     Form,
-    FormControl,
     Button
 } from 'react-bootstrap';
 
-const Header = (props) => {
+const Header = () => {
     const [value, setValue] = useState("")
-    const [loading, setLoader] = useState(true);
+    const store = useStore(stores);
 
     const prepareAddList = (e) => {
-        e.preventDefault()
-        props.store.deleteList();
-        props.store.getList(value);
-        setLoader(false);
-        setValue("")
+        e.preventDefault()        
+        store.getList(value);
+        setValue("");
     }
 
     return (
         <>
             <header>
-                <Container>
-                    <Row noGutters>
-                        <Col md="auto">
+                <Row>
+                    <h1 align="left">GitHub Jobs</h1>                        
                             <h1 align="left">GitHub Jobs</h1>
-                        </Col>
-                    </Row>
-                    <Form>
-                        <Form.Row className="justify-content-md-center">
-                            <Col>
-                                <FormControl type="text" placeholder="Title, companies, expertise or benefits" value={value} type="text" onChange={(e) => setValue(e.target.value)} />
-                            </Col>
-                            <Col md="auto">
-                                <Button onClick={prepareAddList}>Submit</Button>
-                            </Col>
-                        </Form.Row>
-                    </Form>
-                </Container>
+                    <h1 align="left">GitHub Jobs</h1>                        
+                </Row>
+                <Row>
+                <Form onSubmit={prepareAddList} style={{width:"100%"}}> 
+                    <Container>
+                        <Row>
+                            <input type="text" 
+                                style={{width:"90%"}}
+                                placeholder="Title, companies, expertise or benefits"
+                                value={value} type="text"
+                                onChange={(e) => setValue(e.target.value)} />                                                
+                            <Button 
+                                style={{width:"10%"}}
+                                onClick={prepareAddList}>Submit</Button>  
+                        </Row>
+                    </Container>
+                </Form>
+                </Row>
             </header>
         </>
     )
 };
-export default withStore(Header);
+export default Header;
