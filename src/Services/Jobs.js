@@ -6,7 +6,9 @@ export async function getList(params) {
     try {
         const response = await axios.get(apiUrl, {
             params: {
-                description: params.searchQuery || "react"
+                description: params.description,
+                type: params.type,
+                location: params.location
             }
         })       
         console.log(response);

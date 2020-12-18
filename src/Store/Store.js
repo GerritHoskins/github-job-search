@@ -4,8 +4,10 @@ import { getList as jobService } from './../Services/Jobs';
 class Store {
   @observable lists = [];
   @observable filter = "";
-  @observable searchQuery = "";
+  @observable description = "";
   @observable status;
+  @observable location = "";
+  @observable type = "";
 
   constructor() {
     makeAutoObservable(this)
@@ -24,18 +26,19 @@ class Store {
   @action getList = async (search) => {
     try {
       var params = {
-        searchQuery: search
+        description: search.description || "react",
+        type: search.type || "Full Time",
+        location: search.location || "Germany"
       };
-      this.setStatus(!this.satus);
+      //this.setStatus(!this.satus);
       const res = await jobService(params);           
       runInAction(() => { 
         if(res.length > 0 && res){
-          this.setStatus(false);
-        }else {
           this.setStatus(true);
+        }else {
+          this.setStatus(false);
         }
-        this.setList(res);  
-           
+        this.setList(res);            
       });
     } catch (error) {
       runInAction(() => {

@@ -8,22 +8,34 @@ import {
 } from 'react-bootstrap';
 
 const Header = () => {
-    const [value, setValue] = useState("")
+    const [state, setState] = useState({
+        description: "",
+        type: "",
+        location: ""
+    });
     const store = useStore(stores);
 
-    const prepareAddList = (e) => {
-        e.preventDefault()        
-        store.getList(value);
-        setValue("");
+    const prepareAddList = (event) => {
+        event.preventDefault();
+        setState(prevState => ({
+            ...prevState,
+            description: event.target.value
+            }));
+        store.getList(state);
+    }
+
+    const inputGroupChangeHandler = (event) => {
+        setState((prevState) => ({
+           ...prevState,
+           [event.target.id]: event.target.value
+        }));
     }
 
     return (
         <>
             <header>
                 <Row>
-                    <h1 align="left">GitHub Jobs</h1>                        
-                            <h1 align="left">GitHub Jobs</h1>
-                    <h1 align="left">GitHub Jobs</h1>                        
+                    <h1 align="left">GitHub Jobs</h1>                             
                 </Row>
                 <Row>
                 <Form onSubmit={prepareAddList} style={{width:"100%"}}> 
@@ -31,9 +43,11 @@ const Header = () => {
                         <Row>
                             <input type="text" 
                                 style={{width:"90%"}}
+                                id="description"
+                                name="description"
                                 placeholder="Title, companies, expertise or benefits"
-                                value={value} type="text"
-                                onChange={(e) => setValue(e.target.value)} />                                                
+                                value={state.description}
+                                onChange={inputGroupChangeHandler} />                                                
                             <Button 
                                 style={{width:"10%"}}
                                 onClick={prepareAddList}>Submit</Button>  

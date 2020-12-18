@@ -15,12 +15,15 @@ import {
 } from 'react-bootstrap';
 
 const Main = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const store = useStore();
 
-  useEffect(async () => {            
-      await stores.getList();
+  useEffect(async () => {         
+      setIsLoading(true);   
+      await stores.getList({});
       if(!stores.status) {
+        setIsLoading(true);
+      }else{
         setIsLoading(false);
       }
       return;
