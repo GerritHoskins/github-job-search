@@ -1,24 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
+import stores, { useStore } from './../../../Store/Store';
 import {
     Row,
-    Col,
-    Form,
-    FormControl
+    Form
 } from 'react-bootstrap';
 
 const LocationCheckbox = () => {
+
+    const [state, setState] = useState({
+        description: "",
+        type: "",
+        location: ""
+    });
+    const store = useStore(stores);
+
+    const inputGroupChangeHandler = (event) => {
+        setState((prevState) => ({
+           ...prevState,
+           [event.target.id]: event.target.value
+        }));
+    }
+
     return (
         <Row>
             <Form>
-                <Form.Group controlId="check1">
-                    <Form.Check type="checkbox" label="Check me out1" />
-                </Form.Group>
-                <Form.Group controlId="check2">
-                    <Form.Check type="checkbox" label="Check me out2" />
-                </Form.Group>
-                <Form.Group controlId="check3">
-                    <Form.Check type="checkbox" label="Check me out3" />
-                </Form.Group>
+                    <Form.Check    
+                        id="location1" 
+                        name="location"
+                        type="radio" label="Nuremberg" 
+                        value={state.description}
+                        onChange={inputGroupChangeHandler} />                     
+                    <Form.Check  
+                        id="location2" 
+                        name="location"
+                        type="radio" label="Munich"
+                        value={state.description}
+                        onChange={inputGroupChangeHandler} />
+                    <Form.Check  
+                        id="location3" 
+                        name="location" 
+                        type="radio" label="Berlin" 
+                        value={state.description}
+                        onChange={inputGroupChangeHandler} />
+                    <Form.Check  
+                        id="location4" 
+                        name="location" 
+                        type="radio" label="Frankfurt" 
+                        value={state.description}
+                        onChange={inputGroupChangeHandler} />
             </Form>
         </Row>
     )

@@ -25,7 +25,7 @@ class Store {
 
   @action getList = async (search) => {
     try {
-      var params = {
+      const params = {
         description: search.description || "react",
         type: search.type || "Full Time",
         location: search.location || "Germany"
@@ -35,10 +35,11 @@ class Store {
       runInAction(() => { 
         if(res.length > 0 && res){
           this.setStatus(true);
+           this.setList(res);       
         }else {
           this.setStatus(false);
         }
-        this.setList(res);            
+            
       });
     } catch (error) {
       runInAction(() => {
