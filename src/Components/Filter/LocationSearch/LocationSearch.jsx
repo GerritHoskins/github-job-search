@@ -8,7 +8,6 @@ import {
 
 const LocationSearch = () => {
     const [state, setState] = useState({
-        description: "",
         type: "",
         location: ""
     });
@@ -22,11 +21,26 @@ const LocationSearch = () => {
         store.getList(state);
     }
 
-    const inputGroupChangeHandler = (event) => {
+    const inputGroupChangeHandler = (event) => {        
         setState((prevState) => ({
            ...prevState,
            [event.target.id]: event.target.value
         }));
+
+        if(state.location === "" ) {
+            return;
+        }
+        store.setLocation(state.location);
+
+        if(state.type === "" ) {
+            return;
+        }
+        store.setType(state.type);
+        setState((prevState) => ({
+            ...prevState,
+            [event.target.id]: ""
+         }));
+        store.getList(state);
     }
 
     return (
@@ -37,7 +51,7 @@ const LocationSearch = () => {
                         id="type" 
                         name="type"
                         type="checkbox" label="Full time" 
-                        value={state.type}
+                        value="Full Time"
                         onChange={inputGroupChangeHandler} />
                 </Form.Group>
                 </Row>
@@ -50,7 +64,7 @@ const LocationSearch = () => {
                         id="location"
                         name="location"
                         placeholder="City name, zip code or location"
-                        value={state.description}
+                        value={state.location}
                         onChange={inputGroupChangeHandler} />          
                 </Row>
         </Form>

@@ -3,9 +3,10 @@ import { observable, action, computed, runInAction, makeAutoObservable, autorun 
 import { getList as jobService } from './../Services/Jobs';
 class Store {
   @observable lists = [];
-  @observable filter = "";
-  @observable description = "";
   @observable status;
+  @observable filter = "";
+
+  @observable description = "";  
   @observable location = "";
   @observable type = "";
 
@@ -23,14 +24,40 @@ class Store {
       this.status = stat;
   }
 
+  @action
+  setDescription(description) {
+      this.description = description;
+  }
+
+  @action
+  setLocation(location) {
+      this.location = location;
+  }
+
+  @action
+  setType(type) {
+      this.type = type;
+  }
+
+  @action getDescription() {
+    return this.description || "react";
+  }
+
+  @action getType() {
+    return this.type || "";
+  }
+
+  @action getLocation() {
+    return this.location || "Germany";
+  }
+
   @action getList = async (search) => {
     try {
       const params = {
-        description: search.description || "react",
-        type: search.type || "Full Time",
-        location: search.location || "Germany"
+        description: this.getDescription() ,
+        type: this.getType(),
+        location: this.getLocation()
       };
-      //this.setStatus(!this.satus);
       const res = await jobService(params);           
       runInAction(() => { 
         if(res.length > 0 && res){

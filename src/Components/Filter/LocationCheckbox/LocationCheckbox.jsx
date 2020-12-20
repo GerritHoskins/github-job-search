@@ -15,10 +15,12 @@ const LocationCheckbox = () => {
     const store = useStore(stores);
 
     const inputGroupChangeHandler = (event) => {
-        setState((prevState) => ({
+        store.setLocation(event.target.value);
+        store.getList();
+        /* setState((prevState) => ({
            ...prevState,
            [event.target.id]: event.target.value
-        }));
+        })); */
     }
 
     return (
@@ -27,26 +29,26 @@ const LocationCheckbox = () => {
                     <Form.Check    
                         id="location1" 
                         name="location"
-                        type="radio" label="Nuremberg" 
-                        value={state.description}
+                        type="radio" label="Germany" 
+                        value="Germany"
                         onChange={inputGroupChangeHandler} />                     
                     <Form.Check  
                         id="location2" 
                         name="location"
                         type="radio" label="Munich"
-                        value={state.description}
+                        value="Munich"
                         onChange={inputGroupChangeHandler} />
                     <Form.Check  
                         id="location3" 
                         name="location" 
                         type="radio" label="Berlin" 
-                        value={state.description}
+                        value="Berlin"
                         onChange={inputGroupChangeHandler} />
                     <Form.Check  
                         id="location4" 
                         name="location" 
-                        type="radio" label="Frankfurt" 
-                        value={state.description}
+                        type="radio" label="Remote" 
+                        value="Remote" 
                         onChange={inputGroupChangeHandler} />
             </Form>
         </Row>
