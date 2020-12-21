@@ -1,5 +1,5 @@
 import React from 'react';
-import { observable, action, computed, runInAction, makeAutoObservable, autorun } from "mobx";
+import { observable, action, computed, runInAction, makeAutoObservable } from "mobx";
 import { getList as jobService } from './../Services/Jobs';
 class Store {
   @observable lists = [];
@@ -44,7 +44,7 @@ class Store {
   }
 
   @action getType() {
-    return this.type || "";
+    return this.type;
   }
 
   @action getLocation() {
