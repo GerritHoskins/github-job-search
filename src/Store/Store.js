@@ -62,7 +62,7 @@ class Store {
       runInAction(() => { 
         if(res.length > 0 && res){
           this.setStatus(true);
-           this.setList(res);       
+          this.setList(res);       
         }else {
           this.setStatus(false);
         }

@@ -10,34 +10,49 @@ import stores, {
   useStore
 } from './../../Store/Store';
 import Job from '../../Components/Card/Job';
+import Pagination from '../../Components/Pagination/Pagination';
 import {
   Container
 } from 'react-bootstrap';
+import Pagination from 'reactjs-hooks-pagination';
 
+const pageLimit = 5;
 const Main = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const store = useStore();
+  const store = useStore(stores);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalJobs, setTotalJobs] = useState(50);
+  const [allJobs, setAllJobs] = useState([]);  
 
-  useEffect(async () => {         
-      setIsLoading(true);   
-      await stores.getList({});
-      if(!stores.status) {
-        setIsLoading(true);
-      }else{
+  useEffect(() => {               
+      if(store.lists.length > 0) {        
+        setAllJobs(store.lists);
+        setTotalJobs(store.lists.length);
         setIsLoading(false);
       }
-      return;
+      if (totalJobs === 0) {
+        return null;
+      }
   }, []);
 
-  return (
+  return (    
     <Container>
-      {isLoading ? 
+      {isLoading ? (
         <Spinner animation="grow" role="status">
           <span className="sr-only">Loading...</span>
-        </Spinner> :
-      store.lists.map(item => ( 
+        </Spinner> )
+      : (
+      allJobs.length > 0 && allJobs.map(item => ( 
         <Job key={item.id} job={item} />
-      ))}
+      ))      
+       )
+      }
+      <Pagination
+          totalRecords={totalJobs}
+          pageLimit={pageLimit}
+          pageRangeDisplayed={1}
+          onChangePage={setCurrentPage}
+      />
     </Container>
   )
 }
