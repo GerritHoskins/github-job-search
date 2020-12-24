@@ -1,21 +1,21 @@
 import axios from 'axios';
-
+import stores from './../Store/Store';
 const apiUrl = 'https://jobs.github.com/positions.json';
 
-export async function getList(params) {
+export async function jobAPI(params) {    
     try {
         const response = await axios.get(apiUrl, {
             params: {
-                description: params.description,
-                type: params.type,
-                location: params.location
+                description: stores.getDescription(),
+                type: stores.getType(),
+                location: stores.getLocation()
             }
         })       
         console.log(response);
         if(response.statusText === "OK") {
             return response.data;
         }else {
-            return [];
+            return {};
         }        
     } 
     catch (error) {

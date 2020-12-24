@@ -1,9 +1,14 @@
 import React from 'react';
 import { observable, action, computed, runInAction, makeAutoObservable } from "mobx";
-import { getList as jobService } from './../Services/Jobs';
+import {jobAPI} from './../Services/Jobs';
+
 class Store {
   @observable lists = [];
-  @observable status;
+  @observable currentData = [];
+  @observable currentPage = 1;
+  @observable offset = 0;
+  @observable pageLimit = 5;
+  @observable status = false;
   @observable filter = "";
 
   @observable description = "";  
@@ -39,6 +44,20 @@ class Store {
       this.type = type;
   }
 
+  @action
+  setCurrentPage(currentPage) {
+      this.currentPage = currentPage;
+  }
+
+  @action
+  setPageLimit(pageLimit) {
+      this.pageLimit = pageLimit;
+  }
+
+  @action getStatus() {
+    return this.status;
+  }
+
   @action getDescription() {
     return this.description || "react";
   }
@@ -51,28 +70,32 @@ class Store {
     return this.location || "Germany";
   }
 
-  @action getList = async (search) => {
+  @action getOffset() {
+    return this.offset ;
+  }
+
+  @action async fetchList() {
     try {
-      const params = {
-        description: this.getDescription() ,
-        type: this.getType(),
-        location: this.getLocation()
-      };
-      const res = await jobService(params);           
+      const response = await jobAPI();  
       runInAction(() => { 
-        if(res.length > 0 && res){
-          this.setStatus(true);
-          this.setList(res);       
-        }else {
-          this.setStatus(false);
-        }
-            
+        this.addToList(response);
+        this.splitCurrentData;
+        this.setStatus(true);
       });
-    } catch (error) {
-      runInAction(() => {
-        this.status = "error";
-      });
+    }catch(error) {
+      console.log(error);
     }
+  }
+
+  @action get splitCurrentData() {
+    const offset = (this.currentPage - 1) * this.pageLimit; 
+    const currentData = this.lists.slice(offset, offset + this.pageLimit);
+    this.currentData = currentData;
+    return this.currentData;
+  }
+
+  @action addToList = (response) => {
+    this.lists = response;
   }
 
   @action deleteList = (list) => {

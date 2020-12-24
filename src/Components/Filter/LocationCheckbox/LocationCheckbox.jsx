@@ -12,15 +12,11 @@ const LocationCheckbox = () => {
         type: "",
         location: ""
     });
-    const store = useStore(stores);
+    const store = useStore();
 
     const inputGroupChangeHandler = (event) => {
         store.setLocation(event.target.value);
-        store.getList();
-        /* setState((prevState) => ({
-           ...prevState,
-           [event.target.id]: event.target.value
-        })); */
+        store.fetchList();
     }
 
     return (

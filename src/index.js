@@ -11,7 +11,6 @@ import stores, {
 } from './Store/Store';
 
 const container = document.getElementById("root");
-stores.getList({});
 
 ReactDOM.render( <
   StoreProvider store={stores}>
