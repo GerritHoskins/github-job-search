@@ -5,10 +5,9 @@ import React, {
 } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import {
-  observer,
-  useObserver
+  observer
 } from 'mobx-react';
-import stores, {
+import {
   useStore
 } from './../../Store/Store';
 import Job from '../../Components/Card/Job';
@@ -21,9 +20,8 @@ const Main = () => {
 
   const store = useStore();
   const mounted = useRef(true);
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [offset, setOffset] = useState(0);
+  //const [isLoading, setIsLoading] = useState(store.status);
+ // const [offset, setOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);  
   const [data, setData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
@@ -38,39 +36,30 @@ const Main = () => {
   }
 
   useEffect(() => {
-    mounted.current = true;   
-    const getJobData = async() => {               
-      if(data.length && !isLoading) {
-        return;
-      }
-      if(mounted.current && store.status) {    
-        return;
-      }
-      await store.fetchList(); 
-      setData(store.lists); 
-    }
-    getJobData()
-
+    mounted.current = true; 
+    if(data.length === 0 || store.status) {
+      getJobData();
+    }        
     return () => mounted.current = false;
-  }, [data, store.lists, isLoading]);
+  }, [data, store.status]);
 
-  useEffect(() => {
+ /* useEffect(() => {
     const offset = store.getOffset();
     setCurrentData(store.splitCurrentData);
-  }, [offset, data, isLoading]);
+  }, [offset, data, isLoading]);*/
 
-  useEffect(() => {    
-    if(isLoading){
-      setTimeout(() => {
-        if(mounted.current) {
-          setIsLoading(false);
-        }
-      }, 2000)
-    };
-  }, [isLoading]);
+  const getJobData = async() => {   
+    try{
+      await store.fetchList();   
+      setData(store.lists); 
+      setCurrentData(store.currentData);
+    }catch(error){
+      console.warn("error mainjsx")
+    }
+  }
 
   return (      
-    isLoading ? (
+    store.status ? (
       <div>
         <Spinner animation="grow" role="status">
           <span className="sr-only">Loading...</span>

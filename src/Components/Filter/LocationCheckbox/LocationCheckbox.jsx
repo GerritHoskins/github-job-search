@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
-import stores, { useStore } from './../../../Store/Store';
+import { useStore } from './../../../Store/Store';
 import {
     Row,
     Form
 } from 'react-bootstrap';
 
 const LocationCheckbox = () => {
-
-    const [state, setState] = useState({
-        description: "",
-        type: "",
-        location: ""
-    });
     const store = useStore();
-
+    
     const inputGroupChangeHandler = (event) => {
         store.setLocation(event.target.value);
         store.fetchList();
@@ -24,10 +18,10 @@ const LocationCheckbox = () => {
             <Form>
                     <Form.Check    
                         id="location1" 
-                        name="location"
+                        name="location"     
                         type="radio" label="Germany" 
                         value="Germany"
-                        onChange={inputGroupChangeHandler} />                     
+                        onChange={inputGroupChangeHandler} />                    
                     <Form.Check  
                         id="location2" 
                         name="location"

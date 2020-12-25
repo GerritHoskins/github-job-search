@@ -10,17 +10,24 @@ const LocationSearch = () => {
         type: "",
         location: ""
     });
-    const store = useStore(stores);
+    const store = useStore();
     
+    const data = async () => {
+        try{
+            await store.fetchList();
+        }catch(error){
+            console.warn('store error header');
+        }
+    }
+
     const checkBoxHandler = (event) => {     
         let occupationType = event.target.value === "" ? "Full Time" : "";
         setState((prevState) => ({
             ...prevState,
             [event.target.id]: occupationType
          }));
-
-        store.setType(state.type);        
-        store.getList(state);
+        store.setType(state.type);    
+        data();   
     }
 
     const inputHandler = (event) => {        
@@ -29,7 +36,7 @@ const LocationSearch = () => {
            [event.target.id]: event.target.value
         }));
         store.setLocation(state.location);
-        store.getList(state);
+        data();
     }
 
     return (

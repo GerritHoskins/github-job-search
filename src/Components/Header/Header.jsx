@@ -13,15 +13,17 @@ const Header = () => {
         type: "",
         location: ""
     });
-    const store = useStore(stores);
+    const store = useStore();
 
     const prepareAddList = (event) => {
         event.preventDefault();
-        setState(prevState => ({
+        store.setDescription(state.description);
+        store.fetchList(state);
+        /* setState(prevState => ({
             ...prevState,
             description: event.target.value
             }));
-        store.getList(state);
+         */
     }
 
     const inputGroupChangeHandler = (event) => {

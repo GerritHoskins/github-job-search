@@ -50,6 +50,11 @@ class Store {
   }
 
   @action
+  setCurrentData(currentData) {
+      this.currentData = currentData;
+  }
+
+  @action
   setPageLimit(pageLimit) {
       this.pageLimit = pageLimit;
   }
@@ -76,11 +81,12 @@ class Store {
 
   @action async fetchList() {
     try {
+      this.setStatus(true);
       const response = await jobAPI();  
       runInAction(() => { 
         this.addToList(response);
-        this.splitCurrentData;
-        this.setStatus(true);
+        this.splitCurrentData;      
+        this.setStatus(false);  
       });
     }catch(error) {
       console.log(error);
@@ -90,8 +96,8 @@ class Store {
   @action get splitCurrentData() {
     const offset = (this.currentPage - 1) * this.pageLimit; 
     const currentData = this.lists.slice(offset, offset + this.pageLimit);
-    this.currentData = currentData;
-    return this.currentData;
+    this.setCurrentData(currentData);
+   // return this.currentData;
   }
 
   @action addToList = (response) => {
