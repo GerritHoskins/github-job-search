@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import stores, { useStore } from './../../Store/Store';
+import { useStore } from './../../Store/Store';
 import {
     Container,
     Row,
@@ -18,7 +18,7 @@ const Header = () => {
     const prepareAddList = (event) => {
         event.preventDefault();
         store.setDescription(state.description);
-        store.fetchList(state);
+        store.fetchList();
         /* setState(prevState => ({
             ...prevState,
             description: event.target.value

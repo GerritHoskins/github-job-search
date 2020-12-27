@@ -15,39 +15,35 @@ import Pagination from '../../Components/Pagination/Pagination';
 import {
   Container
 } from 'react-bootstrap';
-//import Pagination from 'reactjs-hooks-pagination';
+
 const Main = () => {
 
   const store = useStore();
   const mounted = useRef(true);
-  //const [isLoading, setIsLoading] = useState(store.status);
- // const [offset, setOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);  
   const [data, setData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
   
   const onPageChanged = page => {
-    const { currentPage, pageLimit } = page;
+    const { currentPage, pageLimit } = page;    
     store.setCurrentPage(currentPage);
-    store.setPageLimit(pageLimit);
-    const currentData = store.splitCurrentData;
+    store.setPageLimit(pageLimit);    
     setCurrentPage(currentPage);
-    setCurrentData(currentData);
   }
+
+  useEffect(() => {
+    const currentData = store.splitCurrentData();
+    setCurrentData(currentData)
+  }, [currentPage, store.currentPage]);
 
   useEffect(() => {
     mounted.current = true; 
     if(data.length === 0 || store.status) {
-      getJobData();
+     getJobData();
     }        
     return () => mounted.current = false;
   }, [data, store.status]);
-
- /* useEffect(() => {
-    const offset = store.getOffset();
-    setCurrentData(store.splitCurrentData);
-  }, [offset, data, isLoading]);*/
-
+  
   const getJobData = async() => {   
     try{
       await store.fetchList();   
@@ -66,10 +62,10 @@ const Main = () => {
         </Spinner>
       </div> ) : (
       <Container>
-        {store.currentData.map(data => (
-          <Job key={data.id} job={data} />
-        ))}        
-        {store.currentData.length > 0 &&
+        {store.currentData.map(item => (
+          <Job key={item.id} job={item} />
+        ))} 
+        {store.currentData.length > 0 &&       
         <Pagination
           totalRecords={store.lists.length}
           pageLimit={store.pageLimit}

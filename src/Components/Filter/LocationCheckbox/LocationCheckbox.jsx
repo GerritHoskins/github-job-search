@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from './../../../Store/Store';
+import { debounce, throttle } from 'lodash';
 import {
     Row,
     Form
@@ -10,7 +11,9 @@ const LocationCheckbox = () => {
     
     const inputGroupChangeHandler = (event) => {
         store.setLocation(event.target.value);
+        store.setCurrentPage(1);
         store.fetchList();
+       //throttle(loadData, 1000);
     }
 
     return (

@@ -1,43 +1,35 @@
-import React, { useState } from 'react';
-import stores, { useStore } from './../../../Store/Store';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useStore } from './../../../Store/Store';
+import { debounce } from 'lodash';
 import {
     Row,
     Form
 } from 'react-bootstrap';
 
 const LocationSearch = () => {
-    const [state, setState] = useState({
-        type: "",
-        location: ""
-    });
+    const [type, setType] = useState("");
+    const [location, setLocation] = useState();
+    const [debouncedValue, setDebouncedValue] = useState();
+
     const store = useStore();
-    
-    const data = async () => {
-        try{
-            await store.fetchList();
-        }catch(error){
-            console.warn('store error header');
-        }
-    }
+    const debounceCallback = useCallback(
+        debounce(value => {             
+            store.fetchList();
+        }, 2000),
+        []
+      );
 
-    const checkBoxHandler = (event) => {     
+    const checkBoxHandler = (event) => {    
         let occupationType = event.target.value === "" ? "Full Time" : "";
-        setState((prevState) => ({
-            ...prevState,
-            [event.target.id]: occupationType
-         }));
-        store.setType(state.type);    
-        data();   
+        setType(occupationType);
+        store.setType(occupationType);    
+        debounceCallback();       
     }
-
-    const inputHandler = (event) => {        
-        setState((prevState) => ({
-           ...prevState,
-           [event.target.id]: event.target.value
-        }));
-        store.setLocation(state.location);
-        data();
-    }
+    const inputHandler = ({ target: { value } })  => {       
+       setLocation(value);      
+       store.setLocation(value);
+       debounceCallback(value);
+      };
 
     return (
         <Form style={{width:"100%"}}> 
@@ -48,7 +40,7 @@ const LocationSearch = () => {
                         name="type"
                         type="checkbox" label="Full time" 
                         defaultChecked={true}
-                        value={state.type}
+                        value={store.getType()}
                         onChange={checkBoxHandler} />
                 </Form.Group>
                 </Row>
@@ -61,7 +53,8 @@ const LocationSearch = () => {
                         id="location"
                         name="location"
                         placeholder="City name, zip code or location"
-                        value={state.location}
+                        minLength="4"
+                        value={store.getLocation()}
                         onChange={inputHandler} />          
                 </Row>
         </Form>

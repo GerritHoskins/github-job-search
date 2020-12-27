@@ -1,14 +1,13 @@
 import React from 'react';
 import { observable, action, computed, runInAction, makeAutoObservable } from "mobx";
 import {jobAPI} from './../Services/Jobs';
-
 class Store {
   @observable lists = [];
   @observable currentData = [];
   @observable currentPage = 1;
   @observable offset = 0;
   @observable pageLimit = 5;
-  @observable status = false;
+   @observable status = true;
   @observable filter = "";
 
   @observable description = "";  
@@ -22,11 +21,6 @@ class Store {
   @action
   setList(list) {
       this.lists = list;
-  }
-
-  @action
-  setStatus(stat) {
-      this.status = stat;
   }
 
   @action
@@ -79,29 +73,39 @@ class Store {
     return this.offset ;
   }
 
+  
+  @action getCurrentData() {
+    return this.currentData ;
+  }
+
   @action async fetchList() {
-    try {
-      this.setStatus(true);
+    try {         
       const response = await jobAPI();  
-      runInAction(() => { 
-        this.addToList(response);
-        this.splitCurrentData;      
-        this.setStatus(false);  
+      this.status = true;
+      runInAction(() => {        
+        this.addToList(response);                     
+        this.splitCurrentData();   
+        this.status = false;                     
       });
     }catch(error) {
       console.log(error);
     }
+  };
+
+  @action splitCurrentData = () => {
+    const offset = (this.currentPage - 1) * this.pageLimit;     
+    this.setCurrentData(this.lists.slice(offset, offset + this.pageLimit));  
   }
 
-  @action get splitCurrentData() {
-    const offset = (this.currentPage - 1) * this.pageLimit; 
-    const currentData = this.lists.slice(offset, offset + this.pageLimit);
-    this.setCurrentData(currentData);
-   // return this.currentData;
+  @action setLoadStatus = (status) => {
+    this.status = status;
   }
-
   @action addToList = (response) => {
     this.lists = response;
+  }
+
+  @computed dataSize = () => {
+      return this.currentData.length || this.lists.length;
   }
 
   @action deleteList = (list) => {
