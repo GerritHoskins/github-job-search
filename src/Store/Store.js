@@ -7,12 +7,12 @@ class Store {
   @observable currentPage = 1;
   @observable offset = 0;
   @observable pageLimit = 5;
-   @observable status = true;
+  @observable status = true;
   @observable filter = "";
 
   @observable description = "";  
   @observable location = "";
-  @observable type = "";
+  @observable type = true;
 
   constructor() {
     makeAutoObservable(this)
@@ -66,13 +66,12 @@ class Store {
   }
 
   @action getLocation() {
-    return this.location || "Germany";
+    return this.location;
   }
 
   @action getOffset() {
     return this.offset ;
   }
-
   
   @action getCurrentData() {
     return this.currentData ;
@@ -81,11 +80,11 @@ class Store {
   @action async fetchList() {
     try {         
       const response = await jobAPI();  
-      this.status = true;
+      this.setLoadStatus(true);
       runInAction(() => {        
         this.addToList(response);                     
         this.splitCurrentData();   
-        this.status = false;                     
+        this.setLoadStatus(false);                  
       });
     }catch(error) {
       console.log(error);

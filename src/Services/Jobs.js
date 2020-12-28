@@ -8,8 +8,8 @@ export async function jobAPI(params) {
         const response = await axios.get(apiUrl, {
             params: {
                 description: stores.getDescription(),
-                type: stores.getType(),
-                location: stores.getLocation()
+                full_time: stores.getType(),
+                location: stores.getLocation() || "Germany"
             }
         })       
         console.log(response);

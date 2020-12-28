@@ -10,26 +10,33 @@ const LocationSearch = () => {
     const [type, setType] = useState("");
     const [location, setLocation] = useState();
     const [debouncedValue, setDebouncedValue] = useState();
-
     const store = useStore();
     const debounceCallback = useCallback(
         debounce(value => {             
-            store.fetchList();
+            store.fetchList();                 
         }, 2000),
         []
       );
 
-    const checkBoxHandler = (event) => {    
-        let occupationType = event.target.value === "" ? "Full Time" : "";
-        setType(occupationType);
-        store.setType(occupationType);    
+     useEffect(() => {
+       if(store.status && store.location.length > 0) {
+           setLocation("");
+       }
+    }, [store.status, store.location]); 
+
+    const checkBoxHandler = ({ target: { checked } }) => {    
+        const newValue = !!checked;
+        setType(newValue);
+        store.setType(newValue);    
         debounceCallback();       
-    }
-    const inputHandler = ({ target: { value } })  => {       
-       setLocation(value);      
-       store.setLocation(value);
-       debounceCallback(value);
-      };
+    };
+
+    const inputHandler = ({ target: { value } }) => {     
+        setLocation(value); 
+        store.setLocation(value);
+        debounceCallback(value);
+       
+    };
 
     return (
         <Form style={{width:"100%"}}> 
@@ -39,8 +46,8 @@ const LocationSearch = () => {
                         id="type" 
                         name="type"
                         type="checkbox" label="Full time" 
-                        defaultChecked={true}
-                        value={store.getType()}
+                        checked={store.type}
+                        value={store.type}
                         onChange={checkBoxHandler} />
                 </Form.Group>
                 </Row>
@@ -54,7 +61,7 @@ const LocationSearch = () => {
                         name="location"
                         placeholder="City name, zip code or location"
                         minLength="4"
-                        value={store.getLocation()}
+                        value={store.location}
                         onChange={inputHandler} />          
                 </Row>
         </Form>

@@ -24,6 +24,7 @@ const LocationCheckbox = () => {
                         name="location"     
                         type="radio" label="Germany" 
                         value="Germany"
+                        defaultChecked={true}
                         onChange={inputGroupChangeHandler} />                    
                     <Form.Check  
                         id="location2" 
