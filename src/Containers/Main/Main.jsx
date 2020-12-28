@@ -15,6 +15,7 @@ import Pagination from '../../Components/Pagination/Pagination';
 import {
   Container
 } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 const Main = () => {
 
@@ -63,7 +64,9 @@ const Main = () => {
       </div> ) : (
       <Container>
         {store.currentData.map(item => (
-          <Job key={item.id} job={item} />
+          <Link to={`job/${item.id}`} job={item} >
+            <Job key={item.id} job={item} />
+          </Link>
         ))} 
         {store.currentData.length > 0 &&       
         <Pagination

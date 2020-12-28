@@ -1,15 +1,18 @@
 import React from 'react';
 import './App.css';
-import Top from './Containers/Top/Top';
-import Main from './Containers/Main/Main';
-import Left from './Containers/Left/Left';
+import Home from './Pages/Home';
+import Job from './Pages/Job';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 const App = () => { 
   return (   
-      <>
-        <Top />
-        <Left />
-        <Main />        
-      </>      
+      <BrowserRouter>
+      <Switch>
+        <Route path="/" exact>
+          <Home />             
+        </Route>  
+        <Route exact path="/job/:id" component={Job} />
+        </Switch>         
+      </BrowserRouter>      
   );
 }
 

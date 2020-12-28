@@ -4,6 +4,7 @@ import {jobAPI} from './../Services/Jobs';
 class Store {
   @observable lists = [];
   @observable currentData = [];
+  @observable job = [];
   @observable currentPage = 1;
   @observable offset = 0;
   @observable pageLimit = 5;
@@ -21,6 +22,16 @@ class Store {
   @action
   setList(list) {
       this.lists = list;
+  }
+
+  @action
+  setJob(job) {
+      this.job = job;
+  }
+
+  @action
+  setFilter(filter) {
+      this.filter = filter;
   }
 
   @action
@@ -112,8 +123,11 @@ class Store {
   }
 
   @computed get filteredLists() {
-    const matchCase = new RegExp(this.filter, "i")
-    return this.lists.filter(list => !this.filter || matchCase.test(list.value))
+   //const matchCase = new RegExp(this.filter, "i")
+    this.setLoadStatus(true);
+    const filteredJob = this.lists.filter(list => list.id === this.filter);
+    this.setJob(filteredJob);
+    this.setLoadStatus(false);
   }
 }
 
