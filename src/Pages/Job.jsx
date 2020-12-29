@@ -1,43 +1,53 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useStore } from './../Store/Store';
-import { observer, inject } from 'mobx-react';
-//import Detail from './../Components/Detail/Detail';
-/* import Top from './../Containers/Top/Top';
-import Main from './../Containers/Main/Main';
-import Left from './../Containers/Left/Left'; */
+import { observer } from 'mobx-react';
+import Spinner from 'react-bootstrap/Spinner';
 
 import {
   Container
 } from 'react-bootstrap';
 
-const Job = ({ match }) => {
+const Job = ({ match, props }) => {
   const {
     params: { id }
   } = match;
   const store = useStore();
-  const [filter, setFilter] = useState([]);
+
+  const fetchJob = async() => {
+    store.setFilter(id);
+    try{
+      await store.fetchJobById();
+    }
+    catch(error){
+      console.warn("error job.jsx");
+    }
+  }
  
   useEffect(() => {
-    if(store.job.length > 0){
+    if(store.job.length === 0 || store.status){
+      fetchJob();
+    }else {
       return;
-    }
-    store.setFilter(id)
-    store.filteredLists;
-    setFilter(store.job)
-  }, [filter]);
+    }    
+  }, []);
 
   return (   
     <Container>   
-      {filter.length > 0 &&
-          <>   
-            {filter.title}
-            {filter.company}
-            {filter.company_logo}
-            {filter.type}
-            {filter.location}
-            {filter.created_at}
-          </>
-      }
+      {store.status ? (
+        <Spinner animation="grow" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+      ) : (
+        <>   
+          {store.job.title}
+          {store.job.company}
+          {store.job.company_logo}
+          {store.job.type}
+          {store.job.location}
+          {store.job.created_at}
+          {store.job.description}
+        </>
+      )}
     </Container>
   )    
 }

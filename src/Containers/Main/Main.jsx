@@ -64,7 +64,7 @@ const Main = () => {
       </div> ) : (
       <Container>
         {store.currentData.map(item => (
-          <Link to={`job/${item.id}`} job={item} >
+          <Link to={`job/${item.id}`} props={item} >
             <Job key={item.id} job={item} />
           </Link>
         ))} 

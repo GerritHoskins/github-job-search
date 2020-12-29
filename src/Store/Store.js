@@ -1,6 +1,6 @@
 import React from 'react';
 import { observable, action, computed, runInAction, makeAutoObservable } from "mobx";
-import {jobAPI} from './../Services/Jobs';
+import {jobAPI, jobByIdAPI} from './../Services/Jobs';
 class Store {
   @observable lists = [];
   @observable currentData = [];
@@ -95,6 +95,19 @@ class Store {
       runInAction(() => {        
         this.addToList(response);                     
         this.splitCurrentData();   
+        this.setLoadStatus(false);                  
+      });
+    }catch(error) {
+      console.log(error);
+    }
+  };
+
+  @action async fetchJobById() {
+    try {         
+      const response = await jobByIdAPI();  
+      this.setLoadStatus(true);
+      runInAction(() => {        
+        this.job =response;     
         this.setLoadStatus(false);                  
       });
     }catch(error) {
