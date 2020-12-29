@@ -26,7 +26,7 @@ const Main = () => {
   const [currentData, setCurrentData] = useState([]);
   
   const onPageChanged = page => {
-    const { currentPage, pageLimit } = page;    
+    const { currentPage, pageLimit } = page;
     store.setCurrentPage(currentPage);
     store.setPageLimit(pageLimit);    
     setCurrentPage(currentPage);
@@ -43,7 +43,7 @@ const Main = () => {
      getJobData();
     }        
     return () => mounted.current = false;
-  }, [data, store.status]);
+  }, []);
   
   const getJobData = async() => {   
     try{
@@ -57,25 +57,25 @@ const Main = () => {
 
   return (      
     store.status ? (
-      <div>
+      <>
         <Spinner animation="grow" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
-      </div> ) : (
+      </> ) : (
       <Container>
         {store.currentData.map(item => (
-          <Link to={`job/${item.id}`} props={item} >
+          <Link key={item.id} to={`job/${item.id}`}>
             <Job key={item.id} job={item} />
           </Link>
         ))} 
         {store.currentData.length > 0 &&       
-        <Pagination
-          totalRecords={store.lists.length}
-          pageLimit={store.pageLimit}
-          pageNeighbours={1}
-          onPageChanged={onPageChanged} />  
+          <Pagination
+            totalRecords={store.lists.length}
+            pageLimit={store.pageLimit}
+            pageNeighbours={1}
+            onPageChanged={onPageChanged} />  
         }
-    </Container> )
+      </Container> )
   )
 }
 
