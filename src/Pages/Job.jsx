@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useStore } from './../Store/Store';
 import { observer } from 'mobx-react';
+import Top from './../Containers/Top/Top';
+import Secondary from './../Containers/Secondary/Secondary';
+import Left from './../Containers/Left/Left';
 import Spinner from 'react-bootstrap/Spinner';
-
 import {
   Container
 } from 'react-bootstrap';
@@ -32,23 +34,16 @@ const Job = ({ match, props }) => {
   }, []);
 
   return (   
-    <Container>   
+    <>
+      <Top />
+      <Left />    
       {store.status ? (
         <Spinner animation="grow" role="status">
         <span className="sr-only">Loading...</span>
-      </Spinner>
-      ) : (
-        <>   
-          {store.job.title}
-          {store.job.company}
-          {store.job.company_logo}
-          {store.job.type}
-          {store.job.location}
-          {store.job.created_at}
-          {store.job.description}
-        </>
+        </Spinner> ) : (
+        <Secondary job={store.job} />
       )}
-    </Container>
+    </>    
   )    
 }
 
