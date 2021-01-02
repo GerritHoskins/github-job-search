@@ -9,14 +9,14 @@ import {
 } from 'react-bootstrap';
 
 const Home = () => {
-  //const data = useContext(StoreContext);
+  const parentType = "ListView";
 
   useEffect(() => {}, []);
 
   return (
     <>
-        <Top />
-        <Left />    
+        <Top parent={parentType} />
+        <Left parent={parentType} />    
         <Main />
     </>
   );

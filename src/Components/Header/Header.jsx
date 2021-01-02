@@ -19,11 +19,6 @@ const Header = () => {
         event.preventDefault();
         store.setDescription(state.description);
         store.fetchList();
-        /* setState(prevState => ({
-            ...prevState,
-            description: event.target.value
-            }));
-         */
     }
 
     const inputGroupChangeHandler = (event) => {

@@ -10,6 +10,7 @@ import {
 } from 'react-bootstrap';
 
 const Job = ({ match, props }) => {
+  const parentType = "DetailView";
   const {
     params: { id }
   } = match;
@@ -35,8 +36,8 @@ const Job = ({ match, props }) => {
 
   return (   
     <>
-      <Top />
-      <Left />    
+      <Top parent={parentType} />
+      <Left parent={parentType} />    
       {store.status ? (
         <Spinner animation="grow" role="status">
         <span className="sr-only">Loading...</span>
