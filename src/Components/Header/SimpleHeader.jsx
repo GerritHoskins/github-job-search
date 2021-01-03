@@ -1,17 +1,17 @@
 import React from 'react';
 import {
-    Row
+    Container
 } from 'react-bootstrap';
 
 const SimpleHeader = () => {
     return (
-        <>
-            <header>
-                <Row>
-                    <h1 align="left">GitHub Jobs</h1>                             
-                </Row>               
+        <Container>
+            <header className="page-header">
+                <h3 className="page__title">
+                    <b>Github</b> Jobs
+                </h3>
             </header>
-        </>
+        </Container>
     )
 };
 export default SimpleHeader;

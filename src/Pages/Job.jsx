@@ -35,7 +35,7 @@ const Job = ({ match, props }) => {
   }, []);
 
   return (   
-    <>
+    <section className="jobDetail">
       <Top parent={parentType} />
       <Left parent={parentType} />    
       {store.status ? (
@@ -44,7 +44,7 @@ const Job = ({ match, props }) => {
         </Spinner> ) : (
         <Secondary job={store.job} />
       )}
-    </>    
+    </section>    
   )    
 }
 

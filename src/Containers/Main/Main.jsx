@@ -15,7 +15,6 @@ import Pagination from '../../Components/Pagination/Pagination';
 import {
   Container
 } from 'react-bootstrap';
-import { Link } from "react-router-dom";
 
 const Main = () => {
 
@@ -62,11 +61,9 @@ const Main = () => {
           <span className="sr-only">Loading...</span>
         </Spinner>
       </> ) : (
-      <Container>
-        {store.currentData.map(item => (
-          <Link key={item.id} to={`job/${item.id}`}>
-            <Job key={item.id} job={item} />
-          </Link>
+      <>
+        {store.currentData.map(item => (         
+          <Job key={item.id} job={item} />
         ))} 
         {store.currentData.length > 0 &&       
           <Pagination
@@ -75,7 +72,7 @@ const Main = () => {
             pageNeighbours={1}
             onPageChanged={onPageChanged} />  
         }
-      </Container> )
+      </> )
   )
 }
 

@@ -32,7 +32,7 @@ const Header = () => {
         <>
             <header>
                 <Row>
-                    <h1 align="left">GitHub Jobs</h1>                             
+                    <h1 align="left">github Jobs</h1>                             
                 </Row>
                 <Row>
                 <Form onSubmit={prepareAddList} style={{width:"100%"}}> 

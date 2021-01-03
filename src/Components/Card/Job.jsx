@@ -4,11 +4,12 @@ import {
     Col,
     Card
 } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 const Job = (props) => {   
     const { title, company, id,company_logo, type, location, created_at } = props.job
     return (        
-        <Row key={id}>
+        <Link key={id} to={`job/${id}`}>
             <Card style={{width:"100%"}}
                     bg={"white"} >  
                 <Row>
@@ -32,7 +33,7 @@ const Job = (props) => {
                     </Col>
                 </Row>
             </Card>
-        </Row>
+        </Link>
     )
 };
 export default Job;
