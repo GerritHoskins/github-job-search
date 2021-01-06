@@ -64,6 +64,10 @@ class Store {
       this.pageLimit = pageLimit;
   }
 
+  @action setLoadStatus = (status) => {
+    this.status = status;
+  }
+
   @action getStatus() {
     return this.status;
   }
@@ -119,10 +123,7 @@ class Store {
     const offset = (this.currentPage - 1) * this.pageLimit;     
     this.setCurrentData(this.lists.slice(offset, offset + this.pageLimit));  
   }
-
-  @action setLoadStatus = (status) => {
-    this.status = status;
-  }
+  
   @action addToList = (response) => {
     this.lists = response;
   }

@@ -14,11 +14,11 @@ const Home = () => {
   useEffect(() => {}, []);
 
   return (
-    <React.Fragment>
-        <Top parent={parentType} />
-        <Left parent={parentType} />    
-        <Main />
-        </React.Fragment>
+    <section className="searchPage">
+      <Top parent={parentType} />
+      <Left parent={parentType} />    
+      <Main />
+    </section>   
   );
 }
 
